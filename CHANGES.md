@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.0
+- new API (back to static methods)
+- remove `enc()` and `dec()`
+
 ## 0.2.0
 - new API
 - no longer use static methods

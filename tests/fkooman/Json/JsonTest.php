@@ -20,22 +20,15 @@ namespace fkooman\Json;
 
 class JsonTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var fkooman\Json\Json */
-    private $json;
-
-    public function setUp()
-    {
-        $this->json = new Json();
-    }
     public function testEncode()
     {
-        $e = $this->json->encode(array('foo' => 'bar'));
+        $e = Json::encode(array('foo' => 'bar'));
         $this->assertEquals('{"foo":"bar"}', $e);
     }
 
     public function testPrettyEncode()
     {
-        $e = $this->json->encode(array('foo' => 'bar'), true);
+        $e = Json::encode(array('foo' => 'bar'), true);
         if (defined('JSON_PRETTY_PRINT')) {
             $this->assertEquals("{\n    \"foo\": \"bar\"\n}", $e);
         } else {
@@ -45,15 +38,15 @@ class JsonTest extends \PHPUnit_Framework_TestCase
 
     public function testMoreEncode()
     {
-        $this->assertEquals('5', $this->json->encode(5));
-        $this->assertEquals(5, $this->json->decode('5'));
-        $this->assertEquals('null', $this->json->encode(null));
-        $this->assertNull($this->json->decode('null'));
+        $this->assertEquals('5', Json::encode(5));
+        $this->assertEquals(5, Json::decode('5'));
+        $this->assertEquals('null', Json::encode(null));
+        $this->assertNull(Json::decode('null'));
     }
 
     public function testDecode()
     {
-        $d = $this->json->decode('{"foo":"bar"}');
+        $d = Json::decode('{"foo":"bar"}');
         $this->assertEquals(array('foo' => 'bar'), $d);
     }
 
@@ -63,7 +56,7 @@ class JsonTest extends \PHPUnit_Framework_TestCase
      */
     public function testBrokenEncode()
     {
-        $e = $this->json->encode(
+        $e = Json::encode(
             array(
                 iconv(
                     'UTF-8',
@@ -80,13 +73,13 @@ class JsonTest extends \PHPUnit_Framework_TestCase
      */
     public function testBrokenDecode()
     {
-        $e = $this->json->decode("}");
+        $e = Json::decode("}");
     }
 
     public function testValidJson()
     {
-        $this->assertFalse($this->json->isJson('}'));
-        $this->assertTrue($this->json->isJson('{}'));
-        $this->assertTrue($this->json->isJson('null'));
+        $this->assertFalse(Json::isJson('}'));
+        $this->assertTrue(Json::isJson('{}'));
+        $this->assertTrue(Json::isJson('null'));
     }
 }

@@ -20,11 +20,7 @@ namespace fkooman\Json;
 
 class Json
 {
-    public function __construct()
-    {
-    }
-
-    public function encode($data, $prettyPrint = false)
+    public static function encode($data, $prettyPrint = false)
     {
         $p = 0;
         if ($prettyPrint && defined('JSON_PRETTY_PRINT')) {
@@ -39,7 +35,7 @@ class Json
         return $jsonData;
     }
 
-    public function decode($jsonData, $asArray = true)
+    public static function decode($jsonData, $asArray = true)
     {
         $data = json_decode($jsonData, $asArray ? true : false);
         $jsonError = json_last_error();
@@ -50,24 +46,14 @@ class Json
         return $data;
     }
 
-    public function isJson($jsonData)
+    public static function isJson($jsonData)
     {
         try {
-            $data = $this->decode($jsonData);
+            $data = self::decode($jsonData);
 
             return true;
         } catch (JsonException $e) {
             return false;
         }
-    }
-
-    public function enc($data, $prettyPrint = false)
-    {
-        return $this->encode($data, $prettyPrint);
-    }
-
-    public function dec($jsonData, $asArray = true)
-    {
-        return $this->decode($jsonData, $asArray);
     }
 }

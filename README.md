@@ -21,13 +21,12 @@ To use the library, see the example below:
     use fkooman\Json\Json;
     use fkooman\Json\JsonException;
 
-    $json = new Json();
-    echo $json->encode("foo") . PHP_EOL;
-    echo $json->encode(array('foo' => 'bar')) . PHP_EOL;
-    echo var_export($json->decode('{"foo":"bar"}'), true) . PHP_EOL;
+    echo Json::encode("foo") . PHP_EOL;
+    echo Json::encode(array('foo' => 'bar')) . PHP_EOL;
+    echo var_export(Json::decode('{"foo":"bar"}'), true) . PHP_EOL;
 
     try {
-        $json->decode('{');
+        Json::decode('{');
     } catch (JsonException $e) {
         echo "ERROR: " . $e->getMessage(). PHP_EOL;
     }
