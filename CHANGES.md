@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.0
+- add COPYING file
+- change name of package to fkooman/json from fkooman/php-lib-json
+
 ## 0.3.0
 - new API (back to static methods)
 - remove `enc()` and `dec()`
