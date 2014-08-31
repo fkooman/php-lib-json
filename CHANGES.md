@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.4.1
+- add Json::decodeFromFile() method
+
 ## 0.4.0
 - add COPYING file
 - change name of package to fkooman/json from fkooman/php-lib-json

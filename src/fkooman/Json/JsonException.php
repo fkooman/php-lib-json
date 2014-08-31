@@ -42,7 +42,7 @@ class JsonException extends \Exception
                 $msg = "Malformed UTF-8 characters, possibly incorrectly encoded";
                 break;
             default:
-                $msg = "Unknown error ($message)";
+                $msg = "Other error ($message)";
                 break;
         }
         parent::__construct($msg, $code, $previous);

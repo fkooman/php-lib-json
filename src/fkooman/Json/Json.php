@@ -18,6 +18,8 @@
 
 namespace fkooman\Json;
 
+use RuntimeException;
+
 class Json
 {
     public static function encode($data, $prettyPrint = false)
@@ -44,6 +46,16 @@ class Json
         }
 
         return $data;
+    }
+
+    public static function decodeFromFile($fileName)
+    {
+        $jsonData = @file_get_contents($fileName);
+        if (false === $jsonData) {
+            throw new RuntimeException("unable to read file");
+        }
+
+        return self::decode($jsonData);
     }
 
     public static function isJson($jsonData)

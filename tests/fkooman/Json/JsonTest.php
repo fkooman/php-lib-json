@@ -82,4 +82,20 @@ class JsonTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(Json::isJson('{}'));
         $this->assertTrue(Json::isJson('null'));
     }
+
+    /**
+     * @expectedException RuntimeException
+     * @expectedExceptionMessage unable to read file
+     */
+    public function testDecodeFromFileMissingFile()
+    {
+        $e = Json::decodeFromFile("/foo/bar/baz.json");
+    }
+
+    public function testDecodeFromFile()
+    {
+        $e = Json::decodeFromFile(dirname(dirname(__DIR__)) . "/data/data.json");
+        $this->assertEquals(array('foo' => 'bar'), $e);
+    }
+
 }
