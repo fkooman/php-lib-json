@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.5.1
+- default should not forceObject
+
 ## 0.5.0
 - new API
 - back to objects

@@ -29,7 +29,7 @@ class Json
 
     public function __construct()
     {
-        $this->forceObject = true;
+        $this->forceObject = false;
         $this->prettyPrint = false;
         $this->returnAssocArray = true;
     }
