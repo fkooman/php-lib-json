@@ -19,14 +19,15 @@ To use the library, see the example below:
     require_once 'vendor/autoload.php';
 
     use fkooman\Json\Json;
-    use fkooman\Json\JsonException;
+    use fkooman\Json\Exception\JsonException;
 
-    echo Json::encode("foo") . PHP_EOL;
-    echo Json::encode(array('foo' => 'bar')) . PHP_EOL;
-    echo var_export(Json::decode('{"foo":"bar"}'), true) . PHP_EOL;
+    $j = new Json();
+    echo $j->encode("foo") . PHP_EOL;
+    echo $j->encode(array('foo' => 'bar')) . PHP_EOL;
+    echo var_export($j->decode('{"foo":"bar"}')) . PHP_EOL;
 
     try {
-        Json::decode('{');
+        $j->decode('{');
     } catch (JsonException $e) {
         echo "ERROR: " . $e->getMessage(). PHP_EOL;
     }

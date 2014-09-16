@@ -5,8 +5,8 @@
 %global github_name      php-lib-json
 
 Name:       php-%{composer_vendor}-%{composer_project}
-Version:    0.4.0
-Release:    2%{?dist}
+Version:    0.5.0
+Release:    1%{?dist}
 Summary:    JSON convenience library written in PHP
 
 Group:      System Environment/Libraries
@@ -39,6 +39,12 @@ cp -pr src/* ${RPM_BUILD_ROOT}%{_datadir}/php
 %doc README.md CHANGES.md COPYING composer.json
 
 %changelog
+* Tue Sep 16 2014 François Kooman <fkooman@tuxed.net> - 0.5.0-1
+- update to 0.5.0
+
+* Sun Aug 31 2014 François Kooman <fkooman@tuxed.net> - 0.4.1-1
+- update to 0.4.1
+
 * Fri Aug 29 2014 François Kooman <fkooman@tuxed.net> - 0.4.0-2
 - use github tagged release sources
 - update group to System Environment/Libraries

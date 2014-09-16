@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.0
+- new API
+- back to objects
+- support pretty print, force object and return as assoc array now as 
+  class setters instead of parameters
+- move `JsonException` to `fkooman\Json\Exception` namespace
+- rename `decodeFromFile()` to `decodeFile()`
+
 ## 0.4.1
 - add Json::decodeFromFile() method
 

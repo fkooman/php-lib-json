@@ -19,16 +19,47 @@
 namespace fkooman\Json;
 
 use RuntimeException;
+use fkooman\Json\Exception\JsonException;
 
 class Json
 {
-    public static function encode($data, $prettyPrint = false)
+    private $forceObject;
+    private $prettyPrint;
+    private $returnAssocArray;
+
+    public function __construct()
     {
-        $p = 0;
-        if ($prettyPrint && defined('JSON_PRETTY_PRINT')) {
-            $p |= JSON_PRETTY_PRINT;
+        $this->forceObject = true;
+        $this->prettyPrint = false;
+        $this->returnAssocArray = true;
+    }
+
+    public function setForceObject($forceObject)
+    {
+        $this->forceObject = (bool) $forceObject;
+    }
+
+    public function setPrettyPrint($prettyPrint)
+    {
+        $this->prettyPrint = (bool) $prettyPrint;
+    }
+
+    public function setReturnAssocArray($returnAssocArray)
+    {
+        $this->returnAssocArray = (bool) $returnAssocArray;
+    }
+
+    public function encode($data)
+    {
+        $jsonOptions = 0;
+        if ($this->prettyPrint && defined('JSON_PRETTY_PRINT')) {
+            $jsonOptions |= JSON_PRETTY_PRINT;
         }
-        $jsonData = @json_encode($data, $p);
+        if ($this->forceObject && defined('JSON_FORCE_OBJECT')) {
+            $jsonOptions |= JSON_FORCE_OBJECT;
+        }
+
+        $jsonData = @json_encode($data, $jsonOptions);
         $jsonError = json_last_error();
         if (JSON_ERROR_NONE !== $jsonError) {
             throw new JsonException($jsonError);
@@ -37,9 +68,9 @@ class Json
         return $jsonData;
     }
 
-    public static function decode($jsonData, $asArray = true)
+    public function decode($jsonData)
     {
-        $data = json_decode($jsonData, $asArray ? true : false);
+        $data = json_decode($jsonData, $this->returnAssocArray);
         $jsonError = json_last_error();
         if (JSON_ERROR_NONE !== $jsonError) {
             throw new JsonException($jsonError);
@@ -48,20 +79,20 @@ class Json
         return $data;
     }
 
-    public static function decodeFromFile($fileName)
+    public function decodeFile($fileName)
     {
         $jsonData = @file_get_contents($fileName);
         if (false === $jsonData) {
             throw new RuntimeException("unable to read file");
         }
 
-        return self::decode($jsonData);
+        return $this->decode($jsonData);
     }
 
-    public static function isJson($jsonData)
+    public function isJson($jsonData)
     {
         try {
-            $data = self::decode($jsonData);
+            $data = $this->decode($jsonData);
 
             return true;
         } catch (JsonException $e) {

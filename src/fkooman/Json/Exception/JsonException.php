@@ -16,9 +16,11 @@
 * limitations under the License.
 */
 
-namespace fkooman\Json;
+namespace fkooman\Json\Exception;
 
-class JsonException extends \Exception
+use Exception;
+
+class JsonException extends Exception
 {
     public function __construct($message, $code = 0, Exception $previous = null)
     {

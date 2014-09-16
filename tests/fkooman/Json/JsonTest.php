@@ -22,13 +22,22 @@ class JsonTest extends \PHPUnit_Framework_TestCase
 {
     public function testEncode()
     {
-        $e = Json::encode(array('foo' => 'bar'));
-        $this->assertEquals('{"foo":"bar"}', $e);
+        $j = new Json();
+        $this->assertEquals(
+            '{"foo":"bar"}',
+            $j->encode(
+                array(
+                    'foo' => 'bar'
+                )
+            )
+        );
     }
 
     public function testPrettyEncode()
     {
-        $e = Json::encode(array('foo' => 'bar'), true);
+        $j = new Json();
+        $j->setPrettyPrint(true);
+        $e = $j->encode(array('foo' => 'bar'));
         if (defined('JSON_PRETTY_PRINT')) {
             $this->assertEquals("{\n    \"foo\": \"bar\"\n}", $e);
         } else {
@@ -38,25 +47,28 @@ class JsonTest extends \PHPUnit_Framework_TestCase
 
     public function testMoreEncode()
     {
-        $this->assertEquals('5', Json::encode(5));
-        $this->assertEquals(5, Json::decode('5'));
-        $this->assertEquals('null', Json::encode(null));
-        $this->assertNull(Json::decode('null'));
+        $j = new Json();
+        $this->assertEquals('5', $j->encode(5));
+        $this->assertEquals(5, $j->decode('5'));
+        $this->assertEquals('null', $j->encode(null));
+        $this->assertNull($j->decode('null'));
     }
 
     public function testDecode()
     {
-        $d = Json::decode('{"foo":"bar"}');
+        $j = new Json();
+        $d = $j->decode('{"foo":"bar"}');
         $this->assertEquals(array('foo' => 'bar'), $d);
     }
 
     /**
-     * @expectedException fkooman\Json\JsonException
+     * @expectedException fkooman\Json\Exception\JsonException
      * @expectedExceptionMessage Malformed UTF-8 characters, possibly incorrectly encoded
      */
     public function testBrokenEncode()
     {
-        $e = Json::encode(
+        $j = new Json();
+        $e = $j->encode(
             array(
                 iconv(
                     'UTF-8',
@@ -68,34 +80,37 @@ class JsonTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException fkooman\Json\JsonException
+     * @expectedException fkooman\Json\Exception\JsonException
      * @expectedExceptionMessage Syntax error
      */
     public function testBrokenDecode()
     {
-        $e = Json::decode("}");
+        $j = new Json();
+        $e = $j->decode("}");
     }
 
     public function testValidJson()
     {
-        $this->assertFalse(Json::isJson('}'));
-        $this->assertTrue(Json::isJson('{}'));
-        $this->assertTrue(Json::isJson('null'));
+        $j = new Json();
+        $this->assertFalse($j->isJson('}'));
+        $this->assertTrue($j->isJson('{}'));
+        $this->assertTrue($j->isJson('null'));
     }
 
     /**
      * @expectedException RuntimeException
      * @expectedExceptionMessage unable to read file
      */
-    public function testDecodeFromFileMissingFile()
+    public function testDecodeFileMissingFile()
     {
-        $e = Json::decodeFromFile("/foo/bar/baz.json");
+        $j = new Json();
+        $j->decodeFile("/foo/bar/baz.json");
     }
 
-    public function testDecodeFromFile()
+    public function testDecodeFile()
     {
-        $e = Json::decodeFromFile(dirname(dirname(__DIR__)) . "/data/data.json");
+        $j = new Json();
+        $e = $j->decodeFile(dirname(dirname(__DIR__)) . "/data/data.json");
         $this->assertEquals(array('foo' => 'bar'), $e);
     }
-
 }
