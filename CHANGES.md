@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6.0
+- back to static methods
+- use PHP's JSON options for encoding (also second parameter to 
+  `Json::encode()`
+- remove `JsonException`, throw `InvalidArgumentException` instead on error
+- rename `isJson()` to `isValidJson()`
+
 ## 0.5.1
 - default should not forceObject
 

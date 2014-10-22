@@ -8,7 +8,7 @@
     ],
     "autoload": {
         "psr-0": {
-            "fkooman\\Json\\": "src/"
+            "fkooman\\Json": "src/"
         }
     },
     "description": "PHP library to encode and decode JSON",

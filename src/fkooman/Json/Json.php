@@ -19,84 +19,79 @@
 namespace fkooman\Json;
 
 use RuntimeException;
-use fkooman\Json\Exception\JsonException;
+use InvalidArgumentException;
 
 class Json
 {
-    private $forceObject;
-    private $prettyPrint;
-    private $returnAssocArray;
-
-    public function __construct()
+    public static function encode($data, $encodeOptions = 0)
     {
-        $this->forceObject = false;
-        $this->prettyPrint = false;
-        $this->returnAssocArray = true;
-    }
-
-    public function setForceObject($forceObject)
-    {
-        $this->forceObject = (bool) $forceObject;
-    }
-
-    public function setPrettyPrint($prettyPrint)
-    {
-        $this->prettyPrint = (bool) $prettyPrint;
-    }
-
-    public function setReturnAssocArray($returnAssocArray)
-    {
-        $this->returnAssocArray = (bool) $returnAssocArray;
-    }
-
-    public function encode($data)
-    {
-        $jsonOptions = 0;
-        if ($this->prettyPrint && defined('JSON_PRETTY_PRINT')) {
-            $jsonOptions |= JSON_PRETTY_PRINT;
-        }
-        if ($this->forceObject && defined('JSON_FORCE_OBJECT')) {
-            $jsonOptions |= JSON_FORCE_OBJECT;
-        }
-
-        $jsonData = @json_encode($data, $jsonOptions);
+        $jsonData = @json_encode($data, $encodeOptions);
         $jsonError = json_last_error();
         if (JSON_ERROR_NONE !== $jsonError) {
-            throw new JsonException($jsonError);
+            throw new InvalidArgumentException(self::jsonErrorToString($jsonError));
         }
 
         return $jsonData;
     }
 
-    public function decode($jsonData)
+    public static function decode($jsonData, $assocArray = true)
     {
-        $data = json_decode($jsonData, $this->returnAssocArray);
+        $data = json_decode($jsonData, $assocArray);
         $jsonError = json_last_error();
         if (JSON_ERROR_NONE !== $jsonError) {
-            throw new JsonException($jsonError);
+            throw new InvalidArgumentException(self::jsonErrorToString($jsonError));
         }
 
         return $data;
     }
 
-    public function decodeFile($fileName)
+    public static function decodeFile($fileName, $assocArray = true)
     {
         $jsonData = @file_get_contents($fileName);
         if (false === $jsonData) {
             throw new RuntimeException("unable to read file");
         }
 
-        return $this->decode($jsonData);
+        return self::decode($jsonData, $assocArray);
     }
 
-    public function isJson($jsonData)
+    public static function isValidJson($jsonData)
     {
         try {
-            $data = $this->decode($jsonData);
+            $data = self::decode($jsonData);
 
             return true;
-        } catch (JsonException $e) {
+        } catch (InvalidArgumentException $e) {
             return false;
         }
+    }
+
+    public static function jsonErrorToString($code)
+    {
+        switch ($code) {
+            case JSON_ERROR_NONE:
+                $msg = "No error has occurred";
+                break;
+            case JSON_ERROR_DEPTH:
+                $msg = "The maximum stack depth has been exceeded";
+                break;
+            case JSON_ERROR_STATE_MISMATCH:
+                $msg = "Invalid or malformed JSON";
+                break;
+            case JSON_ERROR_CTRL_CHAR:
+                $msg = "Control character error, possibly incorrectly encoded";
+                break;
+            case JSON_ERROR_SYNTAX:
+                $msg = "Syntax error";
+                break;
+            case JSON_ERROR_UTF8:
+                $msg = "Malformed UTF-8 characters, possibly incorrectly encoded";
+                break;
+            default:
+                $msg = "Other error ($code)";
+                break;
+        }
+
+        return $msg;
     }
 }
