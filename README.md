@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/fkooman/php-lib-json.svg?branch=master)](https://travis-ci.org/fkooman/php-lib-json)
+
 # Introduction
 This is a PHP library written to make it easy and safe to process JSON. It will
 throw exceptions when encoding or decoding fails.
