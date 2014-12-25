@@ -58,7 +58,7 @@ class Json
     public static function isValidJson($jsonData)
     {
         try {
-            $data = self::decode($jsonData);
+            self::decode($jsonData);
 
             return true;
         } catch (InvalidArgumentException $e) {
