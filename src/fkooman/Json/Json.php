@@ -26,23 +26,25 @@ class Json
     public static function encode($data, $encodeOptions = 0)
     {
         $jsonData = @json_encode($data, $encodeOptions);
-        $jsonError = json_last_error();
-        if (JSON_ERROR_NONE !== $jsonError) {
-            throw new InvalidArgumentException(self::jsonErrorToString($jsonError));
-        }
+        self::handleJsonError();
 
         return $jsonData;
     }
 
     public static function decode($jsonData, $assocArray = true)
     {
-        $data = json_decode($jsonData, $assocArray);
+        $data = @json_decode($jsonData, $assocArray);
+        self::handleJsonError();
+
+        return $data;
+    }
+
+    public static function handleJsonError()
+    {
         $jsonError = json_last_error();
         if (JSON_ERROR_NONE !== $jsonError) {
             throw new InvalidArgumentException(self::jsonErrorToString($jsonError));
         }
-
-        return $data;
     }
 
     public static function decodeFile($fileName, $assocArray = true)

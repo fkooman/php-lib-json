@@ -12,7 +12,7 @@ use this library in your application.
 # Tests
 You can run the PHPUnit tests if PHPUnit is installed:
 
-    $ phpunit tests/
+    $ phpunit
 
 Do not forget to run `/path/to/composer.phar install` first.
 
