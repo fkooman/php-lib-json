@@ -23,6 +23,20 @@ use InvalidArgumentException;
 
 class Json
 {
+    const MESSAGE_JSON_ERROR_NONE  = 'No error has occurred';
+    const MESSAGE_JSON_ERROR_DEPTH = 'The maximum stack depth has been exceeded';
+    const MESSAGE_JSON_ERROR_STATE_MISMATCH = 'Invalid or malformed JSON';
+    const MESSAGE_JSON_ERROR_CTRL_CHAR = 'Control character error, possibly incorrectly encoded';
+    const MESSAGE_JSON_ERROR_SYNTAX = 'Syntax error';
+    const MESSAGE_JSON_ERROR_UTF8 = 'Malformed UTF-8 characters, possibly incorrectly encoded';
+    const MESSAGE_OTHER = 'Other error (%s)';
+
+    /**
+     * @param  $data
+     * @param  int $encodeOptions
+     *
+     * @return string
+     */
     public static function encode($data, $encodeOptions = 0)
     {
         $jsonData = @json_encode($data, $encodeOptions);
@@ -31,6 +45,12 @@ class Json
         return $jsonData;
     }
 
+    /**
+     * @param $jsonData
+     * @param bool|true $assocArray
+     *
+     * @return mixed
+     */
     public static function decode($jsonData, $assocArray = true)
     {
         $data = @json_decode($jsonData, $assocArray);
@@ -47,6 +67,14 @@ class Json
         }
     }
 
+    /**
+     * Decode a json file
+     *
+     * @param $fileName
+     * @param bool|true $assocArray
+     *
+     * @return mixed
+     */
     public static function decodeFile($fileName, $assocArray = true)
     {
         $jsonData = @file_get_contents($fileName);
@@ -57,6 +85,13 @@ class Json
         return self::decode($jsonData, $assocArray);
     }
 
+    /**
+     * Check whether a json is valid or not
+     *
+     * @param $jsonData
+     *
+     * @return bool
+     */
     public static function isValidJson($jsonData)
     {
         try {
@@ -68,32 +103,29 @@ class Json
         }
     }
 
+    /**
+     * Convert a json error code to string
+     *
+     * @param $code
+     * @return string
+     */
     public static function jsonErrorToString($code)
     {
         switch ($code) {
             case JSON_ERROR_NONE:
-                $msg = 'No error has occurred';
-                break;
+                return self::MESSAGE_JSON_ERROR_NONE;
             case JSON_ERROR_DEPTH:
-                $msg = 'The maximum stack depth has been exceeded';
-                break;
+                return self::MESSAGE_JSON_ERROR_DEPTH;
             case JSON_ERROR_STATE_MISMATCH:
-                $msg = 'Invalid or malformed JSON';
-                break;
+                return self::MESSAGE_JSON_ERROR_STATE_MISMATCH;
             case JSON_ERROR_CTRL_CHAR:
-                $msg = 'Control character error, possibly incorrectly encoded';
-                break;
+                return self::MESSAGE_JSON_ERROR_CTRL_CHAR;
             case JSON_ERROR_SYNTAX:
-                $msg = 'Syntax error';
-                break;
+                return self::MESSAGE_JSON_ERROR_SYNTAX;
             case JSON_ERROR_UTF8:
-                $msg = 'Malformed UTF-8 characters, possibly incorrectly encoded';
-                break;
+                return self::MESSAGE_JSON_ERROR_UTF8;
             default:
-                $msg = "Other error ($code)";
-                break;
+                return sprintf(self::MESSAGE_OTHER, $code);
         }
-
-        return $msg;
     }
 }
