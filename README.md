@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/fkooman/php-lib-json.svg?branch=master)](https://travis-ci.org/fkooman/php-lib-json)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/fkooman/php-lib-json/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/fkooman/php-lib-json/?branch=master)
 
 # Introduction
 This is a PHP library written to make it easy and safe to process JSON. It will
