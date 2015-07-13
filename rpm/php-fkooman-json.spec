@@ -5,7 +5,7 @@
 %global github_name      php-lib-json
 
 Name:       php-%{composer_vendor}-%{composer_project}
-Version:    0.6.0
+Version:    1.0.0
 Release:    1%{?dist}
 Summary:    JSON convenience library written in PHP
 
@@ -17,7 +17,9 @@ BuildArch:  noarch
 
 Provides:   php-composer(%{composer_vendor}/%{composer_project}) = %{version}
 
-Requires:   php >= 5.3.3
+Requires:   php(language) >= 5.3.3
+Requires:   php-json
+Requires:   php-spl
 
 %description
 This is a PHP library written to make it easy and safe to process JSON.
@@ -36,9 +38,13 @@ cp -pr src/* ${RPM_BUILD_ROOT}%{_datadir}/php
 %defattr(-,root,root,-)
 %dir %{_datadir}/php/%{composer_vendor}/Json
 %{_datadir}/php/%{composer_vendor}/Json/*
-%doc README.md CHANGES.md COPYING composer.json
+%doc README.md CHANGES.md composer.json
+%license COPYING
 
 %changelog
+* Mon Jul 13 2015 François Kooman <fkooman@tuxed.net> - 1.0.0-1
+- update to 1.0.0
+
 * Wed Oct 22 2014 François Kooman <fkooman@tuxed.net> - 0.6.0-1
 - update to 0.6.0 
 

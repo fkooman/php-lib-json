@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0
+- update dependencies
+- source formatting
+
 ## 0.6.0
 - back to static methods
 - use PHP's JSON options for encoding (also second parameter to 
