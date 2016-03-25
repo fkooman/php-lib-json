@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2015 François Kooman <fkooman@tuxed.net>.
+ * Copyright 2016 François Kooman <fkooman@tuxed.net>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@
 namespace fkooman\Json;
 
 use RuntimeException;
-use InvalidArgumentException;
 
 class Json
 {
@@ -43,7 +42,7 @@ class Json
     {
         $jsonError = json_last_error();
         if (JSON_ERROR_NONE !== $jsonError) {
-            throw new InvalidArgumentException(self::jsonErrorToString($jsonError));
+            throw new JsonException(self::jsonErrorToString($jsonError));
         }
     }
 
@@ -51,10 +50,22 @@ class Json
     {
         $jsonData = @file_get_contents($fileName);
         if (false === $jsonData) {
-            throw new RuntimeException('unable to read file');
+            throw new RuntimeException(
+                sprintf('error reading file "%s"', $fileName)
+            );
         }
 
         return self::decode($jsonData, $assocArray);
+    }
+
+    public static function encodeFile($fileName, $data, $encodeOptions = 0)
+    {
+        $jsonData = self::encode($data, $encodeOptions);
+        if (false === @file_put_contents($fileName, $jsonData)) {
+            throw new RuntimeException(
+                sprintf('error writing file "%s"', $fileName)
+            );
+        }
     }
 
     public static function isValidJson($jsonData)
@@ -63,7 +74,7 @@ class Json
             self::decode($jsonData);
 
             return true;
-        } catch (InvalidArgumentException $e) {
+        } catch (JsonException $e) {
             return false;
         }
     }

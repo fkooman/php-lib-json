@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.0 (...)
+- go back to `JsonException` instead of `InvalidArgumentException`
+- introduce `encodeFile()`
+
 ## 1.0.0
 - update dependencies
 - source formatting

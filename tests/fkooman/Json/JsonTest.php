@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2015 François Kooman <fkooman@tuxed.net>.
+ * Copyright 2016 François Kooman <fkooman@tuxed.net>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@ class JsonTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException \fkooman\Json\JsonException
      * @expectedExceptionMessage Malformed UTF-8 characters, possibly incorrectly encoded
      */
     public function testBrokenEncode()
@@ -66,7 +66,7 @@ class JsonTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException \fkooman\Json\JsonException
      * @expectedExceptionMessage Syntax error
      */
     public function testBrokenDecode()
@@ -82,8 +82,8 @@ class JsonTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException RuntimeException
-     * @expectedExceptionMessage unable to read file
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessage error reading file "/foo/bar/baz.json"
      */
     public function testDecodeFileMissingFile()
     {
@@ -94,6 +94,26 @@ class JsonTest extends PHPUnit_Framework_TestCase
     {
         $e = Json::decodeFile(dirname(dirname(__DIR__)).'/data/data.json');
         $this->assertEquals(array('foo' => 'bar'), $e);
+    }
+
+    public function testEncodeFile()
+    {
+        $e = Json::encodeFile(
+            tempnam(sys_get_temp_dir(), 'json_'),
+            array('foo' => 'bar')
+        );
+    }
+
+    /**
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessage error writing file "/foo/bar/baz.json"
+     */
+    public function testEncodeFileNotWritable()
+    {
+        $e = Json::encodeFile(
+            '/foo/bar/baz.json',
+            array('foo' => 'bar')
+        );
     }
 
     public function testForceObject()

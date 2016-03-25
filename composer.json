@@ -18,5 +18,8 @@
         "ext-json": "*",
         "ext-spl": "*",
         "php": ">=5.3.3"
+    },
+    "require-dev": {
+        "ext-iconv": "*"
     }
 }

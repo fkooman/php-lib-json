@@ -23,6 +23,7 @@ To use the library, see the example below:
     require_once 'vendor/autoload.php';
 
     use fkooman\Json\Json;
+    use fkooman\Json\JsonException;
 
     echo Json::encode("foo") . PHP_EOL;
     echo Json::encode(array('foo' => 'bar')) . PHP_EOL;
@@ -30,7 +31,7 @@ To use the library, see the example below:
 
     try {
         Json::decode('{');
-    } catch (InvalidArgumentException $e) {
+    } catch (JsonException $e) {
         echo "ERROR: " . $e->getMessage(). PHP_EOL;
     }
 
