@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.0.0 (...)
+## 2.0.0 (2016-03-25)
 - go back to `JsonException` instead of `InvalidArgumentException`
 - introduce `encodeFile()`
 
